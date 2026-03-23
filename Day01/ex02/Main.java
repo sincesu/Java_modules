@@ -2,20 +2,78 @@ public class Main {
 
 	static void heal(Warrior w)
 	{
-		w.saglik = 100; 
+		w.setSaglik(155);
 	}
 	public static void main(String[] args) {
-		Warrior hero = new Warrior("Samko", 100);
-		hero.hasarAl(100);
-		heal(hero);
-		System.out.println("Sağlık: " + hero.saglik);
+		Mage hero = new Mage("Samko", 100, 0);
+		Mage hero2 = new Mage("Kezgi", 100, 50);
+		hero2.buyuAt(30);
+		hero.hasarAl(30);
+	}
+
+}
+
+class Mage extends Warrior{
+	
+	private int mana;
+
+	Mage(String isim, int saglik, int mana)
+	{
+		super(isim, saglik);
+
+		this.mana = mana;
+	}
+
+	void buyuAt(int value)
+	{
+		if (mana < value)
+		{
+			System.out.println("Mana not enough");
+			return ;
+		}
+		mana -= value;
+		System.out.println(isim + " buyu atti");
+	}
+
+	int getMana(){
+		return mana;
+	}
+
+	void setMana(int num){
+		mana = num;
 	}
 
 }
 
 class Warrior{
-	String isim;
-	int saglik;
+	protected String isim;
+	protected int saglik;
+
+	static void selamVer(String var0) {
+      System.out.println("Selam " + var0 + ", Java'ya hoş geldin!");
+   }
+
+	int getSaglik(){
+		return saglik;
+	}
+
+	void setSaglik(int num)
+	{
+		if (num > 100)
+			saglik = 100;
+		else if (num < 0)
+			saglik = 0;
+		else
+			saglik = num;
+	}
+
+	String getIsım(){
+		return isim;
+	}
+
+	void setIsım(String name){
+		isim = name;
+	}
 
 	Warrior(String isim, int saglik)
 	{
@@ -25,14 +83,10 @@ class Warrior{
 
 	void hasarAl(int miktar)
 	{
-		if (saglik <= 0)
-		{
-			System.err.println("Hero already dead");
-			return ;
-		}
-		saglik -= miktar;
-		System.out.println("Hero took " + miktar + " damage");
-		if (saglik <= 0)
-			System.out.println("Hero dead");
+		setSaglik(getSaglik() - miktar);
+		if (getSaglik() <= 0)
+				System.out.println(isim + " dead");
+		else
+			System.out.println(isim + " took " + miktar + " damage");
 	}
 }
